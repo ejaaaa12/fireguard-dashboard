@@ -21,7 +21,7 @@ function CtrlBtn({ label, active, color, onClick, dark }) {
   );
 }
 
-export default function ControlPanel({ onControl, dark }) {
+export default function ControlPanel({ onControl, dark, isMobile }) {
   const [mode, setMode] = useState("manual");
   const [fan, setFan] = useState(false);
   const [spray, setSpray] = useState(false);
@@ -48,7 +48,7 @@ export default function ControlPanel({ onControl, dark }) {
   };
 
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+    <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 16 }}>
 
       <div style={{ background: bg, border: `1px solid ${border}`, borderRadius: 20, padding: "22px 24px" }}>
         <div style={{ fontSize: 13, fontWeight: 600, color: textMuted, textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: 16 }}>

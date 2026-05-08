@@ -1,6 +1,6 @@
 "use client";
 
-export default function SensorCard({ title, icon, value, unit, subtitle, percent, barColor, badge, badgeColor, dark }) {
+export default function SensorCard({ title, icon, value, unit, subtitle, percent, barColor, badge, badgeColor, dark, isMobile }) {
   const bg = dark ? "#0f1117" : "#ffffff";
   const border = dark ? "#1e2130" : "#e8eaf0";
   const textPrimary = dark ? "#f1f5f9" : "#0f1117";
@@ -18,8 +18,8 @@ export default function SensorCard({ title, icon, value, unit, subtitle, percent
     <div style={{
       background: bg,
       border: `1px solid ${border}`,
-      borderRadius: 20,
-      padding: "22px 24px",
+      borderRadius: isMobile ? 14 : 20,
+      padding: isMobile ? "14px 14px" : "22px 24px",
       display: "flex",
       flexDirection: "column",
       gap: 10,
@@ -44,8 +44,8 @@ export default function SensorCard({ title, icon, value, unit, subtitle, percent
       </div>
 
       <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
-        <span style={{ fontSize: 36, fontWeight: 700, color: textPrimary, fontFamily: "'Syne', sans-serif" }}>{value}</span>
-        {unit && <span style={{ fontSize: 14, color: textMuted }}>{unit}</span>}
+        <span style={{ fontSize: isMobile ? 26 : 36, fontWeight: 700, color: textPrimary, fontFamily: "'Syne', sans-serif" }}>{value}</span>
+        {unit && <span style={{ fontSize: isMobile ? 12 : 14, color: textMuted }}>{unit}</span>}
       </div>
 
       {subtitle && <div style={{ fontSize: 12, color: textMuted }}>{subtitle}</div>}

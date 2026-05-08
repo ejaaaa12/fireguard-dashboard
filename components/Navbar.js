@@ -1,13 +1,13 @@
 "use client";
 import { useState } from "react";
 
-export default function Navbar({ darkMode, setDarkMode }) {
+export default function Navbar({ darkMode, setDarkMode, isMobile }) {
   return (
     <nav style={{
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
-      padding: "14px 32px",
+      padding: isMobile ? "12px 16px" : "14px 32px",
       background: darkMode ? "#0f1117" : "#ffffff",
       borderBottom: darkMode ? "1px solid #1e2130" : "1px solid #e8eaf0",
       position: "sticky",
@@ -19,7 +19,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
         <span style={{
           fontFamily: "'Syne', sans-serif",
           fontWeight: 700,
-          fontSize: 18,
+          fontSize: isMobile ? 15 : 18,
           color: darkMode ? "#ffffff" : "#0f1117",
           letterSpacing: "-0.3px"
         }}>
@@ -33,7 +33,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
           background: darkMode ? "#0d2e1a" : "#f0fdf4",
           border: "1px solid #86efac",
           borderRadius: 20,
-          padding: "5px 12px",
+          padding: isMobile ? "5px 8px" : "5px 12px",
           fontSize: 12,
           color: "#16a34a",
           fontWeight: 500,
@@ -44,7 +44,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
             boxShadow: "0 0 6px #22c55e",
             animation: "blink 2s infinite"
           }} />
-          Connected (MQTT)
+          {!isMobile && "Connected (MQTT)"}
         </div>
 
         <button

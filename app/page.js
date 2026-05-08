@@ -10,6 +10,14 @@ export default function Home() {
   const [dark, setDark] = useState(true);
   const [data, setData] = useState({ temp: 28.4, humidity: 72, gas: 248, fire: false });
   const [history, setHistory] = useState([]);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -42,30 +50,30 @@ export default function Home() {
 
   return (
     <div style={{ minHeight: "100vh", background: bg, transition: "background 0.3s" }}>
-      <Navbar darkMode={dark} setDarkMode={setDark} />
+      <Navbar darkMode={dark} setDarkMode={setDark} isMobile={isMobile} />
 
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "28px 24px", display: "flex", flexDirection: "column", gap: 16 }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: isMobile ? "16px 12px" : "28px 24px", display: "flex", flexDirection: "column", gap: isMobile ? 12 : 16 }}>
 
         {/* Hero */}
         <div style={{
           background: dark ? "#0d1e3b" : "#1d4ed8",
-          borderRadius: 24,
-          padding: "32px 36px",
+          borderRadius: isMobile ? 16 : 24,
+          padding: isMobile ? "20px 18px" : "32px 36px",
           display: "flex",
-          alignItems: "center",
+          flexDirection: isMobile ? "column" : "row",
+          alignItems: isMobile ? "flex-start" : "center",
           justifyContent: "space-between",
-          flexWrap: "wrap",
-          gap: 16,
+          gap: 14,
         }}>
           <div>
             <h1 style={{
               fontFamily: "'Syne', sans-serif",
-              fontSize: 26, fontWeight: 700, color: "#ffffff",
-              marginBottom: 8, letterSpacing: "-0.5px"
+              fontSize: isMobile ? 20 : 26, fontWeight: 700, color: "#ffffff",
+              marginBottom: 8, letterSpacing: "-0.5px", lineHeight: 1.3,
             }}>
               Smart Environment Monitoring
             </h1>
-            <p style={{ fontSize: 14, color: "#93c5fd", maxWidth: 480, lineHeight: 1.6 }}>
+            <p style={{ fontSize: isMobile ? 13 : 14, color: "#93c5fd", lineHeight: 1.6 }}>
               Monitoring gas, temperature, humidity, and fire detection in realtime via ESP32 + MQTT.
             </p>
           </div>
@@ -74,6 +82,8 @@ export default function Home() {
             border: "none", borderRadius: 12,
             padding: "10px 22px", fontSize: 14, fontWeight: 700,
             cursor: "pointer", fontFamily: "'Syne', sans-serif",
+            alignSelf: isMobile ? "flex-start" : "center",
+            whiteSpace: "nowrap",
           }}>
             Open Dashboard →
           </button>
@@ -97,28 +107,32 @@ export default function Home() {
         )}
 
         {/* Sensor Cards */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 14 }}>
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(auto-fit, minmax(220px, 1fr))",
+          gap: isMobile ? 10 : 14
+        }}>
           <SensorCard
-            title="Air Quality (MQ135)" icon="💨"
+            title="Air Quality" icon="💨"
             value={data.gas} unit="ppm"
-            subtitle="CO2, NH3, Smoke"
+            subtitle="MQ135 — CO2, NH3"
             percent={gasPercent} barColor={gasBarColor}
             badge={gasBadge} badgeColor={gasBadgeColor}
-            dark={dark}
+            dark={dark} isMobile={isMobile}
           />
           <SensorCard
             title="Temperature" icon="🌡️"
             value={data.temp} unit="°C"
             subtitle="DHT11 Sensor"
             percent={tempPercent} barColor={tempBarColor}
-            dark={dark}
+            dark={dark} isMobile={isMobile}
           />
           <SensorCard
             title="Humidity" icon="💧"
             value={data.humidity} unit="%"
             subtitle="Relative Humidity"
             percent={Math.round(data.humidity)} barColor="#3b82f6"
-            dark={dark}
+            dark={dark} isMobile={isMobile}
           />
           <SensorCard
             title="Fire Sensor" icon="🔥"
@@ -126,7 +140,7 @@ export default function Home() {
             subtitle="Flame Detector"
             badge={data.fire ? "Danger" : "Normal"}
             badgeColor={data.fire ? "danger" : "good"}
-            dark={dark}
+            dark={dark} isMobile={isMobile}
           />
         </div>
 
@@ -134,7 +148,7 @@ export default function Home() {
         <ChartSection history={history} dark={dark} />
 
         {/* Control + Rules */}
-        <ControlPanel onControl={handleControl} dark={dark} />
+        <ControlPanel onControl={handleControl} dark={dark} isMobile={isMobile} />
 
         {/* Footer */}
         <div style={{ textAlign: "center", fontSize: 12, color: textMuted, padding: "8px 0 4px" }}>
