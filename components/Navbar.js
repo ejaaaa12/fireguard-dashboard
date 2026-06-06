@@ -1,7 +1,9 @@
 "use client";
 import { useState } from "react";
 
-export default function Navbar({ darkMode, setDarkMode, isMobile }) {
+export default function Navbar({ darkMode, setDarkMode, isMobile, connected, systemStatus }) {
+  const isAlert = systemStatus && systemStatus !== "NORMAL";
+
   return (
     <nav style={{
       display: "flex",
@@ -14,6 +16,7 @@ export default function Navbar({ darkMode, setDarkMode, isMobile }) {
       top: 0,
       zIndex: 100,
     }}>
+      {/* Logo */}
       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
         <span style={{ fontSize: 22 }}>🔥</span>
         <span style={{
@@ -21,32 +24,55 @@ export default function Navbar({ darkMode, setDarkMode, isMobile }) {
           fontWeight: 700,
           fontSize: isMobile ? 15 : 18,
           color: darkMode ? "#ffffff" : "#0f1117",
-          letterSpacing: "-0.3px"
+          letterSpacing: "-0.3px",
         }}>
-          Fireguard <span style={{ color: "#3b82f6" }}>Dashboard</span>
+          FireGuard <span style={{ color: "#3b82f6" }}>+</span>
         </span>
       </div>
 
-      <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+      {/* Status pills */}
+      <div style={{ display: "flex", alignItems: "center", gap: isMobile ? 8 : 14 }}>
+
+        {/* System status */}
+        {isAlert && (
+          <div style={{
+            display: "flex", alignItems: "center", gap: 6,
+            background: darkMode ? "#2d0f0f" : "#fef2f2",
+            border: "1px solid #fca5a5",
+            borderRadius: 20,
+            padding: isMobile ? "4px 8px" : "5px 12px",
+            fontSize: 12,
+            color: "#dc2626",
+            fontWeight: 600,
+            animation: "blink 1s infinite",
+          }}>
+            🚨 {isMobile ? "" : systemStatus}
+          </div>
+        )}
+
+        {/* MQTT connection */}
         <div style={{
           display: "flex", alignItems: "center", gap: 7,
-          background: darkMode ? "#0d2e1a" : "#f0fdf4",
-          border: "1px solid #86efac",
+          background: connected
+            ? (darkMode ? "#0d2e1a" : "#f0fdf4")
+            : (darkMode ? "#1e2130" : "#f8fafc"),
+          border: connected ? "1px solid #86efac" : "1px solid #cbd5e1",
           borderRadius: 20,
           padding: isMobile ? "5px 8px" : "5px 12px",
           fontSize: 12,
-          color: "#16a34a",
+          color: connected ? "#16a34a" : "#94a3b8",
           fontWeight: 500,
         }}>
           <span style={{
             width: 7, height: 7, borderRadius: "50%",
-            background: "#22c55e",
-            boxShadow: "0 0 6px #22c55e",
-            animation: "blink 2s infinite"
+            background: connected ? "#22c55e" : "#94a3b8",
+            boxShadow: connected ? "0 0 6px #22c55e" : "none",
+            animation: connected ? "blink 2s infinite" : "none",
           }} />
-          {!isMobile && "Connected (MQTT)"}
+          {!isMobile && (connected ? "Connected (MQTT)" : "Disconnected")}
         </div>
 
+        {/* Dark mode toggle */}
         <button
           onClick={() => setDarkMode(!darkMode)}
           style={{

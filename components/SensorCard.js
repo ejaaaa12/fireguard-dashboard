@@ -8,25 +8,32 @@ export default function SensorCard({ title, icon, value, unit, subtitle, percent
   const trackBg = dark ? "#1e2130" : "#f1f5f9";
 
   const badgeStyles = {
-    good: { bg: dark ? "#0d2e1a" : "#f0fdf4", color: "#16a34a", border: "#86efac" },
-    warn: { bg: dark ? "#2d1f00" : "#fffbeb", color: "#d97706", border: "#fcd34d" },
+    good:   { bg: dark ? "#0d2e1a" : "#f0fdf4", color: "#16a34a", border: "#86efac" },
+    warn:   { bg: dark ? "#2d1f00" : "#fffbeb", color: "#d97706", border: "#fcd34d" },
     danger: { bg: dark ? "#2d0f0f" : "#fef2f2", color: "#dc2626", border: "#fca5a5" },
   };
   const bs = badgeStyles[badgeColor] || badgeStyles.good;
 
   return (
-    <div style={{
-      background: bg,
-      border: `1px solid ${border}`,
-      borderRadius: isMobile ? 14 : 20,
-      padding: isMobile ? "14px 14px" : "22px 24px",
-      display: "flex",
-      flexDirection: "column",
-      gap: 10,
-      transition: "transform 0.2s, box-shadow 0.2s",
-    }}
-      onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = dark ? "0 8px 32px #0006" : "0 8px 32px #0001"; }}
-      onMouseLeave={e => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = ""; }}
+    <div
+      style={{
+        background: bg,
+        border: `1px solid ${border}`,
+        borderRadius: isMobile ? 14 : 20,
+        padding: isMobile ? "14px 14px" : "22px 24px",
+        display: "flex",
+        flexDirection: "column",
+        gap: 10,
+        transition: "transform 0.2s, box-shadow 0.2s",
+      }}
+      onMouseEnter={e => {
+        e.currentTarget.style.transform = "translateY(-3px)";
+        e.currentTarget.style.boxShadow = dark ? "0 8px 32px #0006" : "0 8px 32px #0001";
+      }}
+      onMouseLeave={e => {
+        e.currentTarget.style.transform = "";
+        e.currentTarget.style.boxShadow = "";
+      }}
     >
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -38,13 +45,15 @@ export default function SensorCard({ title, icon, value, unit, subtitle, percent
             fontSize: 11, fontWeight: 600,
             background: bs.bg, color: bs.color,
             border: `1px solid ${bs.border}`,
-            borderRadius: 20, padding: "3px 9px"
+            borderRadius: 20, padding: "3px 9px",
           }}>{badge}</span>
         )}
       </div>
 
       <div style={{ display: "flex", alignItems: "baseline", gap: 6 }}>
-        <span style={{ fontSize: isMobile ? 26 : 36, fontWeight: 700, color: textPrimary, fontFamily: "'Syne', sans-serif" }}>{value}</span>
+        <span style={{ fontSize: isMobile ? 26 : 36, fontWeight: 700, color: textPrimary, fontFamily: "'Syne', sans-serif" }}>
+          {value}
+        </span>
         {unit && <span style={{ fontSize: isMobile ? 12 : 14, color: textMuted }}>{unit}</span>}
       </div>
 
@@ -60,7 +69,7 @@ export default function SensorCard({ title, icon, value, unit, subtitle, percent
               height: "100%", borderRadius: 4,
               width: `${percent}%`,
               background: barColor || "#3b82f6",
-              transition: "width 0.6s ease"
+              transition: "width 0.6s ease",
             }} />
           </div>
         </div>
